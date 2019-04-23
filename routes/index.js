@@ -38,16 +38,20 @@ router.post('/', function(req, res) {
 			//Store the artist, song, preview link, and album in the results array
 			if (type === 'track') {
 				spotRes.tracks.items.forEach(function(ea) {
+					const urlPreview = ea.external_urls.spotify;
+					const formattedUrl = urlPreview.slice(0, 24) + '/embed/' + urlPreview.slice(25, 53);
 					results.push({
+						id: ea.id,
 						artist: ea.artists[0].name,
 						song: ea.name,
-						preview: ea.external_urls.spotify,
+						preview: formattedUrl,
 						album: ea.album.name
 					});
 				});
 			} else if (type === 'artist') {
 				spotRes.artists.items.forEach(function(ea) {
 					results.push({
+						id: ea.id,
 						artist: ea.name,
 						genres: ea.genres,
 						image: ea.images[0]
@@ -55,8 +59,8 @@ router.post('/', function(req, res) {
 				});
 			} else if (type === 'album') {
 				spotRes.albums.items.forEach(function(ea) {
-					console.log('results form post ', ea);
 					results.push({
+						id: ea.id,
 						artist: ea.artists[0].name,
 						name: ea.name,
 						genres: ea.genres,
